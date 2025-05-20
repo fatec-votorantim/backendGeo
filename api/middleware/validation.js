@@ -1,6 +1,5 @@
 import { check, param, validationResult } from "express-validator"
 import { ObjectId } from "mongodb"
-//const db = req.app.locals.db
 
 // Middleware para verificar resultados da validação
 export const validateRequest = (req, res, next) => {
@@ -189,17 +188,7 @@ export const validateUsuario = [
   check('email')
     .not().isEmpty().trim().withMessage('É obrigatório informar o email')
     .isEmail().withMessage('Informe um email válido')  
-    .isLowercase().withMessage('Não são permitidas maiúsculas')
-    /*.custom((value, {  })=> {
-      return db.collection('usuarios')
-             .find({email: {$eq: value}}).toArray()
-             .then((email) => {
-              //Verifica se não existe o Id para garantir que é inclusão
-              if(email.length){
-                return Promise.reject(`o email ${value} já existe!`)
-              }
-             })
-    })*/,
+    .isLowercase().withMessage('Não são permitidas maiúsculas'),   
     check('senha')
       .not().isEmpty().trim().withMessage('A senha é obrigatória')
       .isLength({min:6}).withMessage('A senha deve ter no mínimo 6 caracteres')
@@ -220,3 +209,28 @@ export const validateUsuario = [
   //Aplica as validações
   validateRequest     
 ]
+
+export const checkEmailDuplicado = async (req, res, next) => {
+  const db = req.app.locals.db
+  const email = req.body.email
+
+  if (!email) return next() // evita erro se o campo nem foi enviado
+
+  try {
+    const existe = await db.collection('usuarios').findOne({ email })
+    if (existe) {
+      return res.status(400).json({
+        error: true,
+        message: `O e-mail ${email} já está em uso`,
+        errors: [{ msg: `O e-mail ${email} já está em uso`, param: 'email', location: 'body' }]
+      })
+    }
+    next()
+  } catch (err) {
+    console.error("Erro ao verificar e-mail duplicado:", err)
+    return res.status(500).json({
+      error: true,
+      message: "Erro interno ao validar o e-mail",
+    })
+  }
+}

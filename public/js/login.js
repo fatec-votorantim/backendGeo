@@ -3,6 +3,8 @@ const urlBase = window.location.href + 'api'
 document.getElementById('formLogin').addEventListener('submit', function(event){
     event.preventDefault()//evita o recarregamento default
     const msgModal = new bootstrap.Modal(document.getElementById('modalMensagem'))
+    //Limpa a mensagem de erro
+    document.getElementById('mensagem').innerHTML = ''
     //Obtendo os dados do formulário
     const login = document.getElementById('login').value
     const senha = document.getElementById('senha').value
@@ -28,7 +30,8 @@ document.getElementById('formLogin').addEventListener('submit', function(event){
         const errorMessages = data.errors.map(error => error.msg).join('<br>')
         //Alteramos a mensagem no modal
         document.getElementById('mensagem').innerHTML = `<span class='text-danger'>${errorMessages}</span>`
+        msgModal.show()
     }
-    msgModal.show()
+    
     })
 })

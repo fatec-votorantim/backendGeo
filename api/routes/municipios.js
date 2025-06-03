@@ -17,16 +17,16 @@ router.get("/", auth, getMunicipios)
 // Get municipios by distance
 router.get("/nearby", getMunicipiosByDistance)
 
-// Get municipio by ID
-router.get("/:id", validateObjectId, getMunicipioById)
+// Get municipio by ID 
+router.get("/:id", auth, validateObjectId, getMunicipioById)
 
 // Create new municipio
-router.post("/", validateMunicipio, createMunicipio)
+router.post("/", auth, validateMunicipio, createMunicipio)
 
 // Update municipio
-router.put("/:id", validateObjectId, validateUpdateMunicipio, updateMunicipio)
+router.put("/:id", auth,  validateObjectId, validateUpdateMunicipio, updateMunicipio)
 
 // Delete municipio
-router.delete("/:id", validateObjectId, deleteMunicipio)
+router.delete("/:id", auth, validateObjectId, deleteMunicipio)
 
 export default router

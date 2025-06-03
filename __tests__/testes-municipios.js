@@ -8,8 +8,8 @@ dotenv.config() //carrega os valores do .env
 
 const baseURL = 'http://localhost:3000/api'
 
-describe('API REST de Municipios sem o Token', () => {
-    it('GET / Lista todos os municipios s/o token', async () => {
+describe('👉API REST de Municipios sem o Token', () => {
+    it('GET - Lista todos os municipios semo token', async () => {
         const response = await request(baseURL)
             .get('/municipios')
             .set('Content-Type', 'application/json')
@@ -25,7 +25,7 @@ describe('API REST de Municipios sem o Token', () => {
     })
 })
 
-describe('API REST de Municipios com o Token', () => {
+describe('👉API REST de Municipios com o Token', () => {
     let token //armazenaremos o token JWT
     let idMunicipioInserido //Utilizaremos para editar e excluir
     it('POST - Autentica usuário', async () => {
@@ -40,7 +40,7 @@ describe('API REST de Municipios com o Token', () => {
         expect(token).toBeDefined() //recebemos o token?
     })
 
-    it('Obter os municipios com o token', async () => {
+    it('GET - Obter os municipios com o token', async () => {
         const response = await request(baseURL)
             .get('/municipios')
             .set('Content-Type', 'application/json')
@@ -51,8 +51,8 @@ describe('API REST de Municipios com o Token', () => {
         expect(municipios).toBeInstanceOf(Object)
     })
 
-    const dadosMunicipio = {
-        "codigo_ibge": 8200099,
+    let dadosMunicipio = {
+        "codigo_ibge": 8400099,
         "nome": "Novo Municipio",
         "capital": false,
         "codigo_uf": 52,
@@ -73,13 +73,11 @@ describe('API REST de Municipios com o Token', () => {
             .send(dadosMunicipio)
             .expect(201) //Created
 
-        expect(response.body).toHaveProperty('acknowledged')
-        expect(response.body.acknowledged).toBe(true)
+        expect(response.body).toHaveProperty('_id')
+        expect(typeof response.body._id).toBe('string')
+        expect(response.body._id.length).toBeGreaterThan(0)
 
-        expect(response.body).toHaveProperty('insertedId')
-        expect(typeof response.body.insertedId).toBe('string')
-        idMunicipioInserido = response.body.insertedId
-        expect(response.body.insertedId.length).toBeGreaterThan(0)
+        idMunicipioInserido = response.body._id
     })
 
     it('GET /:id - Lista o municipio pelo id com token', async () => {
@@ -91,24 +89,19 @@ describe('API REST de Municipios com o Token', () => {
     })
 
     it('PUT - Altera os dados do municipio', async () => {
-        novoDadosMunicipio = {
-            ...dadosMunicipio, //spread operator
-            '_id': idMunicipioInserido
-        }
-        novoDadosMunicipio.nome += ' alterado'
+        //alterando alguns dados 
+        dadosMunicipio.nome += ' alterado'
+        dadosMunicipio.codigo_ibge = '9999999'        
         const response = await request(baseURL)
-            .put('/municipios')
+            .put(`/municipios/${idMunicipioInserido}`)
             .set('Content-Type', 'application/json')
             .set('access-token', token)
-            .send(novoDadosMunicipio)
-            .expect(202) //Accepted
+            .send(dadosMunicipio)
+            .expect(200)
 
-        expect(response.body).toHaveProperty('acknowledged')
-        expect(response.body.acknowledged).toBe(true)
-
-        expect(response.body).toHaveProperty('modifiedCount')
-        expect(typeof response.body.modifiedCount).toBe('number')
-        expect(response.body.modifiedCount).toBeGreaterThan(0)
+        expect(response.body).toHaveProperty('_id')
+        expect(typeof response.body._id).toBe('string')
+        expect(response.body._id.length).toBeGreaterThan(0)
     })
 
     it('DELETE - Remove o municipio', async () => {
@@ -118,12 +111,8 @@ describe('API REST de Municipios com o Token', () => {
             .set('access-token', token)
             .expect(200)
 
-        expect(response.body).toHaveProperty('acknowledged')
-        expect(response.body.acknowledged).toBe(true)
-
-        expect(response.body).toHaveProperty('deletedCount')
-        expect(typeof response.body.deletedCount).toBe('number')
-        expect(response.body.deletedCount).toBeGreaterThan(0)
+        expect(response.body).toHaveProperty('message')
+        expect(response.body.message).toBe('Município deleted successfully')
     })
 
 })

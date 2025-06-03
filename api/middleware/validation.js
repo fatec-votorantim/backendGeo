@@ -20,7 +20,7 @@ export const validateObjectId = [param("id").isMongoId().withMessage("Formato de
 // Validações para o município
 export const validateMunicipio = [
   // Valida o código IBGE
-  check("codigo_ibge")
+ check("codigo_ibge")
     .notEmpty()
     .withMessage("O código IBGE é obrigatório")
     .isInt({ min: 1000000, max: 9999999 })
@@ -28,21 +28,17 @@ export const validateMunicipio = [
     .custom(async (codigo_ibge, { req }) => {
       const db = req.app.locals.db
 
-      // Monta a query para verificar a unicidade
-      const query = { codigo_ibge }
-      if (req.method === "PUT" && req.params.id) {
-        // Exclui o registro atual da verificação de unicidade
-        query["_id"] = { $ne: new ObjectId(req.params.id) }
-      }
+      const query = { codigo_ibge: parseInt(codigo_ibge) }
 
-      // Verifica se existe algum registro com o mesmo código IBGE
+   if (req.method === "POST" ) { 
       const existe = await db.collection("municipios").countDocuments(query)
       if (existe > 0) {
         throw new Error("O código IBGE informado já está cadastrado em outro município")
       }
-      return true
-    }),
 
+      return true
+    }
+  }),
   // Valida o nome do município
   check("nome")
     .notEmpty()
@@ -113,7 +109,7 @@ export const validateUpdateMunicipio = [
       const query = { codigo_ibge }
       if (req.params.id) {
         // Exclui o registro atual da verificação de unicidade
-        query["_id"] = { $ne: new ObjectId(req.params.id) }
+        query["_id"] = { $ne: ObjectId.createFromHexString(req.params.id) }
       }
 
       // Verifica se existe algum registro com o mesmo código IBGE

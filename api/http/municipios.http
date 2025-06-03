@@ -1,8 +1,8 @@
 // Instale a extensão REST Client para efetuar os testes
 // Teste da API REST de Municipios
 @baseURL = http://localhost:3000/api/municipios
-@id = 67dd9f52e9bced2ce766ba27
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjp7ImlkIjoiNjgyMjdmZDg3MmJkMjZhMGI5MDljYjlhIn0sImlhdCI6MTc0NzA5MTgwNiwiZXhwIjoxNzQ3MTc4MjA2fQ.P7zL2GfpGbHrt7k9_0Mscdz_yPVYFXrwxlevu46ZVZw
+@id = 683f5a83e2bd1c733ca91b25
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjp7ImlkIjoiNjgyYzkwOWNhZjY2ZTc1YmY2MjZiOWFhIn0sImlhdCI6MTc0ODk4MDUwOSwiZXhwIjoxNzQ5MDY2OTA5fQ.nOZgN7N7wQFh9iiwoZVT6Fz09PVY3Q69VQgU_WM2Y8k
 
 ###
 // GET - Lista todos os municipios
@@ -31,9 +31,10 @@ Content-Type: application/json
 // POST - Insere um novo municipio
 POST {{baseURL}}
 Content-Type: application/json
+access-token: {{token}}
 
 {
-  "codigo_ibge": 5200059,
+  "codigo_ibge": 5200061,
   "nome": "Abadia de Votorantim",
   "capital": false,
   "codigo_uf": 52,
@@ -52,9 +53,10 @@ Content-Type: application/json
 
 PUT {{baseURL}}/{{id}}
 Content-Type: application/json
+access-token: {{token}}
 
 {
-  "codigo_ibge": 5200059,
+  "codigo_ibge": 5200061,
   "nome": "Abadia de Votorantim Sorocabana",
   "capital": false,
   "codigo_uf": 52,
@@ -66,3 +68,16 @@ Content-Type: application/json
     ]
   }
 }
+
+###
+PUT {{baseURL}}/683f5be4ab5f1d1ce63765fe
+Content-Type: application/json
+access-token: {{token}}
+
+   {
+      "codigo_ibge": "9999",
+      "nome": "Novo Municipio alterado",
+      "capital": false,
+      "codigo_uf": 52,
+      "local": { "type": "Point", "coordinates": [ -45.4412, -16.7573 ] }
+    }

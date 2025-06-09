@@ -10,7 +10,6 @@ import usuariosRoutes from './routes/usuarios.js'
 config() //carrega o conteúdo do .env
 const app = express()
 const PORT = process.env.PORT || 3000
-const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css"
 
 
 app.use(cors()) //Habilita o CORS Cross-Origin resource sharing
@@ -23,8 +22,7 @@ app.use('/api/usuarios', usuariosRoutes)
 // Rota da documentação Swagger 
 app.use('/api/doc', swaggerUI.serve, swaggerUI.setup(JSON.parse(fs.readFileSync('./api/swagger/swagger_output.json')), {
     customCss:
-        '.swagger-ui .opblock .opblock-summary-path-description-wrapper { align-items: center; display: flex; flex-wrap: wrap; gap: 0 10px; padding: 0 10px; width: 100%; }',
-    customCssUrl: CSS_URL
+        '.swagger-ui .opblock .opblock-summary-path-description-wrapper { align-items: center; display: flex; flex-wrap: wrap; gap: 0 10px; padding: 0 10px; width: 100%; }'
 }))
 //define o favicon
 app.use('/favicon.ico', express.static('public/images/logo.png'))

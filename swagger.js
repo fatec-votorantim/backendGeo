@@ -16,8 +16,8 @@ const doc = {
     securityDefinitions: {
         apiKeyAuth:{
             type: "apiKey",
-            in: "header",       // can be "header", "query" or "cookie"
-            name: "access-token",  // name of the header, query parameter or cookie
+            in: "header",      // can be "header", "query" or "cookie"
+            name: "access-token",   // name of the header, query parameter or cookie
             description: "Token de Acesso gerado após o login"
         }
     },
@@ -31,14 +31,22 @@ const doc = {
 }
 
 const outputFile = './api/swagger/swagger_output.json'
-const endpointsFiles = ['./api/index.js']
+const endpointsFiles = [
+    './api/routes/municipios.js',
+    './api/routes/usuarios.js'
+    // Adicione outros arquivos de rota que você tenha, por exemplo:
+    // './api/routes/produtos.js',
+];
+// =============================
+
 const options = {
-    swagger: '2.0',          // By default is null
-    language: 'pt-BR',         // By default is 'en-US'
-    disableLogs: false,     // By default is false
-    disableWarnings: false  // By default is false
+    swagger: '2.0',
+    language: 'pt-BR',
+    disableLogs: false,
+    disableWarnings: false
 }
 
-swaggerAutogen(options)(outputFile, endpointsFiles, doc).then(async () => {
-    await import('./api/index.js'); // Your project's root file
-  });
+
+swaggerAutogen(options)(outputFile, endpointsFiles, doc).then(() => {
+    console.log('Documentação Swagger gerada com sucesso em:', outputFile);
+});

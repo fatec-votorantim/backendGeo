@@ -47,7 +47,6 @@ console.log(`swaggerUiPath (para arquivos estáticos do Swagger UI): ${swaggerUi
 let swaggerDocument;
 const swaggerFilePath = path.join(__dirname, 'swagger', 'swagger_output.json');
 
-// --- ADICIONE ESTES LOGS E TRY...CATCH PARA DEPURAR A LEITURA DO ARQUIVO ---
 console.log(`Tentando ler o arquivo swagger_output.json em: ${swaggerFilePath}`);
 
 try {
@@ -56,8 +55,6 @@ try {
     console.log("swagger_output.json lido e parseado com sucesso!");
 } catch (err) {
     console.error(`ERRO CRÍTICO: Falha ao ler ou parsear swagger_output.json em ${swaggerFilePath}: ${err.message}`);
-    // Define um documento vazio para que o Swagger UI tente renderizar, mas não caia no PetStore padrão
-    // Isso nos ajudará a confirmar que o erro está na leitura do arquivo.
     swaggerDocument = {};
 }
 

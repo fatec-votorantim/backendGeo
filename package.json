@@ -4,6 +4,9 @@
   "description": "Mongogeo",
   "main": "api/index.js",
   "type": "module",
+  "engines": {
+    "node": ">=18.0.0" 
+  },
   "scripts": {
     "test": "jest",
     "start": "node ./api/index.js",

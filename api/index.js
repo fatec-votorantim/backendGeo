@@ -26,7 +26,7 @@ const swaggerFilePath = path.resolve('api/swagger/swagger_output.json')
 const swaggerDocument = JSON.parse(fs.readFileSync(swaggerFilePath, 'utf8'))
 
 // Rota da documentação 
-app.use('/api/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument, { customCssUrl: CSS_URL }))
+app.use('/api/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument))
 
 // Favicon
 app.use('/favicon.ico', express.static('public/images/logo.png'))

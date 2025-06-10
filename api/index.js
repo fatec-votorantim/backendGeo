@@ -11,7 +11,7 @@ import usuariosRoutes from './routes/usuarios.js'
 config()
 const app = express()
 const PORT = process.env.PORT || 3000
-const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css" //CSS do Swagger para evitar erro no Vercel
+const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.6.0/swagger-ui.min.css" //CSS do Swagger para evitar erro no Vercel
 
 app.use(cors())
 app.use(express.json())

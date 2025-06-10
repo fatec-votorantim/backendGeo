@@ -11,6 +11,7 @@ import usuariosRoutes from './routes/usuarios.js'
 config()
 const app = express()
 const PORT = process.env.PORT || 3000
+const CSS_URL = "/swagger-ui.css" // Caminho relativo à pasta 'public'
 
 app.use(cors())
 app.use(express.json())
@@ -25,7 +26,7 @@ const swaggerFilePath = path.resolve('api/swagger/swagger_output.json')
 const swaggerDocument = JSON.parse(fs.readFileSync(swaggerFilePath, 'utf8'))
 
 // Rota da documentação 
-app.use('/api/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument))
+app.use('/api/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument, { customCssUrl: CSS_URL }))
 
 // Favicon
 app.use('/favicon.ico', express.static('public/images/logo.png'))

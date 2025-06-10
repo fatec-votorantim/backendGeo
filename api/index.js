@@ -26,7 +26,11 @@ const swaggerFilePath = path.resolve('api/swagger/swagger_output.json')
 const swaggerDocument = JSON.parse(fs.readFileSync(swaggerFilePath, 'utf8'))
 
 // Rota da documentação 
-app.use('/api/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument))
+app.use('/api/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument, {
+    customCss:
+        '.swagger-ui .opblock .opblock-summary-path-description-wrapper { align-items: center; display: flex; flex-wrap: wrap; gap: 0 10px; padding: 0 10px; width: 100%; }',
+    customCssUrl: CSS_URL
+}))
 
 // Favicon
 app.use('/favicon.ico', express.static('public/images/logo.png'))

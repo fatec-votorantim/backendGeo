@@ -45,11 +45,9 @@ try {
 }
 
 // Rota da documentação Swagger
-// Serve os arquivos estáticos do Swagger UI diretamente de swagger-ui-dist antes do swaggerUI.setup
-app.use('/api/doc', express.static(swaggerUiPath), swaggerUI.serve, swaggerUI.setup(JSON.parse(fs.readFileSync('./api/swagger/swagger_output.json')), {
+app.use('/api/doc', express.static(swaggerUiPath), swaggerUI.serve, swaggerUI.setup(JSON.parse(fs.readFileSync(path.join(__dirname, 'swagger', 'swagger_output.json'))), {
     customCss:
         '.swagger-ui .opblock .opblock-summary-path-description-wrapper { align-items: center; display: flex; flex-wrap: wrap; gap: 0 10px; padding: 0 10px; width: 100%; }',
-    // customCssUrl: CSS_URL // Certifique-se de que esta linha esteja comentada ou removida
 }));
 
 // define o favicon

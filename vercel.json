@@ -1,8 +1,21 @@
 {
-    "version": 2,    
-    "functions": {
-        "api/index.js": {
-            "includeFiles": "api/swagger/swagger_output.json"
-        }
+  "version": 2,
+  "builds": [
+    {
+      "src": "index.js", 
+      "use": "@vercel/node"
     }
+  ],
+  "routes": [
+    {
+      "src": "/api/doc/(.*)",
+      "dest": "/index.js" 
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.js"
+    }
+  ],
+  "installCommand": "npm install",
+  "buildCommand": "npm run build" 
 }

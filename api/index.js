@@ -30,6 +30,27 @@ app.use('/', express.static('public'))
 app.use('/api/municipios', municipiosRoutes)
 app.use('/api/usuarios', usuariosRoutes)
 
+// --- CÓDIGO DE DEBUG TEMPORÁRIO: REMOVA DEPOIS DE CONCLUIR O DIAGNÓSTICO ---
+// Esta rota permitirá que você veja o conteúdo EXATO do swagger_output.json
+// que está sendo lido pelo seu backend no Vercel.
+app.get('/api/debug-swagger-json', (req, res) => {
+    const debugSwaggerFilePath = path.join(__dirname, 'swagger', 'swagger_output.json');
+    try {
+        const debugFileContent = fs.readFileSync(debugSwaggerFilePath, 'utf8');
+        res.setHeader('Content-Type', 'application/json');
+        res.send(debugFileContent);
+        console.log("DEBUG: Arquivo swagger_output.json servido via /api/debug-swagger-json");
+    } catch (err) {
+        console.error(`DEBUG ERRO: Falha ao servir swagger_output.json via /api/debug-swagger-json: ${err.message}`);
+        res.status(500).json({ 
+            error: "Não foi possível servir o swagger_output.json para debug", 
+            details: err.message,
+            pathAttempted: debugSwaggerFilePath 
+        });
+    }
+});
+// --- FIM DO CÓDIGO DE DEBUG TEMPORÁRIO ---
+
 // Determine o caminho para swagger-ui-dist usando uma abordagem compatível com módulos ES
 let swaggerUiPath;
 try {
